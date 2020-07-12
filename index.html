@@ -13,18 +13,21 @@
 
 
 	<div id="content">
-		<div id="restaurantList"></div>
+		<div id="restaurantItems"></div>
 		<div id="map"></div>
 	</div>
 
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU&callback=initMap&libraries=places" defer ></script>
 
 
-	<script src="js/list.js"></script>
 	<script src="js/map.js"></script>
+	<script src="js/list.js"></script>
 
 
+
+	<script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU&libraries=places&callback=initMap">
+            </script>
 </body>
 </html>
