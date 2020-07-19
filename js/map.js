@@ -3,6 +3,7 @@ var searchBar = $("#searchbar")[0];
 searchBar.addEventListener("submit", geocode);
 var searchlocalisation = $("#searchlocalisation")[0];
 
+/*
 //CREATION DE LA MAP CENTREE SUR LA FRANCE
 function initMap() {
 
@@ -27,6 +28,65 @@ function initMap() {
 	autocomplete = new google.maps.places.SearchBox(searchlocalisation, options);
 
 
+}
+*/
+///////////////////////////////
+// INITIALISATION DE LA MAP
+///////////////////////////////
+function  initMap() {
+      var map;
+      var france = {
+        lat : 46.485873,
+          lng : 2.640097
+      }
+
+      map = new google.maps.Map(document.getElementById("map"), {
+      center: france,
+      zoom: 7
+      });
+
+	/////////////////////////
+	// AUTOCOMPLETE
+	/////////////////////////
+      var options = {
+        types: ['(country)'],
+        componentRestrictions: {country: 'fr'}
+      };
+      
+      autocomplete = new google.maps.places.SearchBox(searchlocalisation, options);
+
+	/////////////////////////
+	// BOUTON CREATION MARKER
+	/////////////////////////
+	let createMarkerButtonActive = false;
+	let createMarkerButton = $("#createMarker")[0];
+		createMarkerButton.addEventListener("click", activeMarker);
+
+	function activeMarker() {
+		createMarkerButtonActive = true;
+		createMarkerButton.style.backgroundColor = "black";
+		dblClick(createMarkerButtonActive);
+	}
+
+	function dblClick(createMarkerButtonActive){
+		if (createMarkerButtonActive == true) {
+			map.addListener('dblclick', function(e) {
+				placeMarkerAndPanTo(createMarkerButtonActive, e.latLng, map);
+			});
+		} else {
+			google.maps.event.clearListeners(map, 'dblclick');
+		}
+	}
+
+	function placeMarkerAndPanTo(createMarkerButtonActive, latLng, map) {
+		  var marker = new google.maps.Marker({
+		    position: latLng,
+		    map: map
+		  });
+		  map.panTo(latLng);
+		  createMarkerButtonActive = false;
+		  createMarkerButton.style.backgroundColor = "";
+	}
 }
 
 // RECHERCHE DU LIEU SAISI DANS L'INPUT
@@ -64,24 +124,38 @@ function searchLocalisation(response) {
 
 // AFFICHAGE DU LIEU DE RECHERCHE
 function places(search, map){
-
 	var request = {
 	 	location: search,
 	    radius: '150',
-	    query: searchlocalisation.value
+	    query: "restaurant"
 	  };
 	  service = new google.maps.places.PlacesService(map);
 	  service.textSearch(request, callback);
 
 	function callback(results, status) {
-		console.log(results);
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      createMarkerInfos(results[i]);
-	    }
-	    list.createItem(results);
-	  }
+		let restaurantItemsContent = $("#restaurantItemsContent")[0];
+			restaurantItemsContent.style.display = "block";
+		let restaurantItem = $(".restaurantItem");
+		  if (status == google.maps.places.PlacesServiceStatus.OK) {
+		  	//Boucle "for" qui me permet de supprimer l'ancienne recherche.
+		  	for (var i = 0; i < restaurantItem.length; i++) {
+		  		let supprRestaurantItemsContent = restaurantItemsContent.removeChild(restaurantItem[i]);
+		  	}
+		  	//Boucle "for" qui me permet de générer la nouvelle recherche.	
+		    for (var i = 0; i < results.length; i++) {
+		      createMarkerInfos(results[i]);
+		      let restaurant = new RestaurantItem (
+		      		results[i].name,
+		      		results[i].place_id,
+		      		results[i].formatted_address,
+		      		results[i].rating,
+		      		'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + results[i].geometry.viewport.Za.i+ ',' + results[i].geometry.viewport.Ua.i + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+		      	) 
+		    restaurant.createItem();
+		    }
+		  }
 	}
+
 	function createMarkerInfos(results) {
 		var lat1 = results.geometry.viewport.Za.i;
 		var lng1 = results.geometry.viewport.Ua.i;

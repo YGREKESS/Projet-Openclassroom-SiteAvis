@@ -8,24 +8,49 @@ body {
   min-width: 100vh;
   margin: 0;
   padding: 0;
-
 }
 
-#searchbar{
-  height: 10vh;
-  width: 100%;
-  background-color: white;
-  text-align: center;
+.header{
+  height: 8vh;
+  display: flex;
+  flex-direction: row;
+  padding-top: 15px;
   border: 1px solid black;
 }
 
+#searchbar{
+  margin-left: 50px;
+  width: 100%;
+  text-align: center;
+}
+
 #searchlocalisation{
-  border-radius: 5px;
-  width: 600px;
-  height: 25px;
-  margin-top: 25px;
-  font-size: 15px;
-  background-color: black;
+  height: 35px;
+  width: 600px; 
+  background-color: white;
+  color: black;
+}
+
+#submitlocalisation{
+  height: 35px;
+}
+
+#filterId{
+  height: 35px;
+  width: 200px;
+  margin-right: 40px; 
+}
+
+#createMarker{
+  height: 35px;
+  width: 200px;
+  margin-right: 40px;  
+}
+
+#geolocation{
+  height: 35px;
+  width: 150px;
+  margin-right: 40px;  
 }
 
 #content{
@@ -33,7 +58,8 @@ body {
   flex-direction: row;
 }
 
-#restaurantItems{
+#restaurantItemsContent{
+  display: none;
   background-color: white;
   overflow: auto;
   height: 90vh;
@@ -41,7 +67,39 @@ body {
 }
 
 #map{
- background-color: skyblue;
+  background-color: skyblue;
   height: 90vh;
-  width: 80%;	
+  width: 100%;	
+}
+/* MODAL */
+.modal_address{
+  margin: 20px 0px 20px 0px;
+}
+
+.modal_CommentTitle{
+  background-color: skyblue;
+}
+
+.modal_CommentContentClass{
+  margin: 20px 0px 20px 0px;
+
+  -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
+  box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75); 
+}
+
+#modal_WriteReview{
+  margin: 20px 0px 20px 0px;
+}
+.modal_ReviewsContent{
+  height: 300px;
+  overflow: auto;
+}
+
+#addModal {
+  text-align: center;
+}
+
+#modal_ButtonAddReview{
+  margin: auto;
 }

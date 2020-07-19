@@ -29,14 +29,14 @@ class Mmap {
       e.preventDefault();
 
       var location = searchlocalisation.value;
-      axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
+      axios.ge("thttps://maps.googleapis.com/maps/api/geocode/json", {
         params:{
           address: location,
           key: "AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU"
         }
       })
       .then(function(response){ // SI OK
-        searchLocalisation(response);
+        this.searchLocalisation(response);
       })
       .catch(function(error){ // SI KO
         console.log(error);

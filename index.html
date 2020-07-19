@@ -2,32 +2,106 @@
 <html>
 <head>
 	<meta charset="utf-8" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-	<form id="searchbar">
-		<input id="searchlocalisation" type="text" name="localisation" placeholder="Rentrez la localisation souhaitée" style="padding-top: 6px; color: white;" ></input>
-		<button id="submitlocalisation" type="submit" name="submitLocalisation" style="padding-top: 6px;" > Envoyer </button>
-	</form>
-
+	<div class="header">
+		<form id="searchbar">
+			<input id="searchlocalisation" type="text" name="localisation" class="btn btn-primary btn-lg" placeholder="Rentrez la localisation souhaitée"></input>
+			<button id="submitlocalisation" class="btn btn-primary btn-lg" type="submit" name="submitLocalisation"><h6>Envoyer</h6></button>
+		</form>
+		<select id="filterId" class="form-control">
+            <option disabled selected="selected">Nombre d'étoile : </option>
+            <option value="noFilter"> Pas de filtre </option>
+            <option value="1"> 1 étoile </option>
+            <option value="2"> 2 étoiles </option>
+            <option value="3"> 3 étoiles </option>
+            <option value="4"> 4 étoiles </option>
+            <option value="5"> 5 étoiles </option>
+        </select>
+        <button id="createMarker" class="btn btn-primary btn-lg" type="submit"><h6>Ajouter une adresse</h6></button>
+        <button id="geolocation" class="btn btn-primary btn-lg" type="submit"><h6>Me géolocaliser</h6></button>
+	</div>
 
 	<div id="content">
-		<div id="restaurantItems"></div>
+		<div id="restaurantItemsContent"></div>
 		<div id="map"></div>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="restaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        	<h5 class="modal_title" id="exampleModalLabel"></h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</button>
+	      </div>
+		      	<div class="modal_photo"></div>
+	      <div class="modal_Body">
+	      		<div class="modal_address"></div>
+	      		<h5 class="modal_CommentTitle" >Les avis</h5>
+		      	<div class="modal_ReviewsContent"></div>
+	      	<div class="modal_ButtonAddReview">
+	        	<button type="button" id="modal_WriteReview" data-toggle= "modal" data-target= "#addModal" class="btn btn-primary">Ecrire un avis</button>
+	      	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+    <!-- Modal add comment-->
+    <div class="modal fade" id="addModal" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                	<h4 class="modal-title" id="myModalLabel">Ajouter votre commentaire</h4>
+                    <button type="button" id="addModal_CrossClose" class="close" data-dismiss="modal"  aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="modal-name" method="post" >
+                        <p>
+                        <label for="pseudo">Votre pseudo : </label>
+                        <input type="text" class="form-control" name="pseudo" id="pseudoId" placeholder="Votre pseudo"/>
+                        </p>
+                    </form>
+                    <form class="modal-comment">
+                        <p>
+                        <label for="pseudo">Votre commentaire : </label>
+                        <input type="text" class="form-control" name="commentaire" id="commentId" placeholder="Votre commentaire" size="74" row="9" maxlength="2000" />
+                        </p>
+                    </form>
+                    <form class="modal-rating">
+                        <p>
+                        <label for="pseudo">Votre note : </label>
+                        <input type="number" class="form-control" name="note" id="ratingId" min="0" max="5" size="50" maxlength="1" />
+                        </p>
+                    </form>
+                    <button type="button" id="modal_ButtonAddReview" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	<script src="js/map.js"></script>
-	<script src="js/list.js"></script>
+	<script src="js/restaurantItem.js"></script>
+	<script src="js/outil.js"></script>
+	<script src="js/comment.js"></script>
+	<script src="js/app.js"></script>
 
-
+    <script>
+        var app = new App();
+    </script>
 
 	<script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU&libraries=places&callback=initMap">
-            </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU&libraries=places&callback=initMap">
+    </script>
 </body>
 </html>
