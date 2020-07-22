@@ -49,7 +49,6 @@ class RestaurantItem {
 	}
 
 	displayModal(){
-
 		let modal_title = $(".modal_RestaurantDescription_title")[0];
 			modal_title.innerHTML = this.name;
 		let modal_Photo = $(".modal_RestaurantDescription_photo")[0];
@@ -66,11 +65,10 @@ class RestaurantItem {
 				)
 			comment.displayComment();
 		}
-		console.log(this.reviewsArray);
 
 		this.addMyReview = this.addMyReview.bind(this);
 		let modal_AddComment_ButtonAddReview = $("#modal_AddComment_ButtonAddReview")[0]; //Bouton "Ajouter" après avoir rempli l'input (name, rating, comment)//		
-			modal_AddComment_ButtonAddReview.addEventListener("click", this.addMyReview,{once: true});
+			modal_AddComment_ButtonAddReview.addEventListener("click", this.addMyReview);
 	
 		$("#modal_RestaurantDescription").on('hide.bs.modal', function () {
 			modal_AddComment_ButtonAddReview.removeEventListener("click", this.addMyReview);

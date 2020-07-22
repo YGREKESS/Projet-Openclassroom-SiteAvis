@@ -1,6 +1,7 @@
 class App {
 
 	launchApp(){
+		this.geolocalisation();
 	    this.filterListener();
 	}
 
@@ -31,12 +32,39 @@ class App {
 		}
 	}
 
+	geolocalisation(){
+
+		let geolocationButton = $("#geolocation")[0];
+			geolocationButton.addEventListener("click", geolocalizeMe.bind(this), {once: true});
+
+		function geolocalizeMe(){
+		geolocationButton.removeEventListener("click", geolocalizeMe.bind(this));
+			navigator.geolocation.getCurrentPosition(function(position) {
+
+			  var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+			  var myOptions = {
+			    zoom: 15,
+			    center: latlng,
+			    mapTypeId: google.maps.MapTypeId.TERRAIN,
+			    disableDefaultUI: true
+			  }
+			  var map = new google.maps.Map(document.getElementById("map"), myOptions);
+			  map_1.places(latlng, map);
+			  
+			  this.addMyRestaurant(map);
+
+			}.bind(this));
+		};
+	}
+
 	addMyRestaurant(map){
 		let createMarkerButtonActive = false;
 		let createMarkerButton = $("#createMarker")[0];
 			createMarkerButton.addEventListener("click", activeMarker);
 
 		function activeMarker() {
+			createMarkerButton.removeEventListener("click", activeMarker);
 			alert("Double-cliquez à l'endroit où vous souhaitez ajouter votre restaurant.")
 			createMarkerButtonActive = true;
 			createMarkerButton.style.backgroundColor = "black";
@@ -45,7 +73,6 @@ class App {
 
 		function dblClick(createMarkerButtonActive){
 			if (createMarkerButtonActive == true) {
-				
 				map.addListener('dblclick', function(e) {
 					$('#modal_AddMarker').modal('toggle');		
 
@@ -68,7 +95,8 @@ class App {
 						);
 					});
 				});
-			} else {	
+			} else {
+				
 				google.maps.event.clearListeners(map, 'dblclick');
 			}
 		}
