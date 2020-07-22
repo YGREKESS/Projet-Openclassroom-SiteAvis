@@ -31,21 +31,21 @@
 		<div id="map"></div>
 	</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="restaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- Modal restaurant description-->
+	<div class="modal fade" id="modal_RestaurantDescription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        	<h5 class="modal_title" id="exampleModalLabel"></h5>
+	        	<h5 class="modal_RestaurantDescription_title" id="exampleModalLabel"></h5>
 	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</button>
 	      </div>
-		      	<div class="modal_photo"></div>
+		      	<div class="modal_RestaurantDescription_photo"></div>
 	      <div class="modal_Body">
-	      		<div class="modal_address"></div>
-	      		<h5 class="modal_CommentTitle" >Les avis</h5>
-		      	<div class="modal_ReviewsContent"></div>
+	      		<div class="modal_RestaurantDescription_address"></div>
+	      		<h5 class="modal_RestaurantDescription_CommentTitle" >Les avis</h5>
+		      	<div class="modal_RestaurantDescription_ReviewsContent"></div>
 	      	<div class="modal_ButtonAddReview">
-	        	<button type="button" id="modal_WriteReview" data-toggle= "modal" data-target= "#addModal" class="btn btn-primary">Ecrire un avis</button>
+	        	<button type="button" id="modal_RestaurantDescription_WriteReview" data-toggle= "modal" data-target= "#modal_AddComment" class="btn btn-primary">Ecrire un avis</button>
 	      	</div>
 	      </div>
 	    </div>
@@ -53,7 +53,7 @@
 	</div>
 
     <!-- Modal add comment-->
-    <div class="modal fade" id="addModal" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="modal_AddComment" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,7 +79,41 @@
                         <input type="number" class="form-control" name="note" id="ratingId" min="0" max="5" size="50" maxlength="1" />
                         </p>
                     </form>
-                    <button type="button" id="modal_ButtonAddReview" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
+                    <button type="button" id="modal_AddComment_ButtonAddReview" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal add marker-->
+    <div class="modal fade" id="modal_AddMarker" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Ajouter votre restaurant</h4>
+                    <button type="button" id="addModal_CrossClose" class="close" data-dismiss="modal"  aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="modal-name" method="post" >
+                        <p>
+                        <label for="pseudo">Nom du restaurant : </label>
+                        <input type="text" class="form-control" name="restaurantName" id="modal_AddMarker_RestaurantName" placeholder="Nom du restaurant"/>
+                        </p>
+                    </form>
+                    <form class="modal-address">
+                        <p>
+                        <label for="pseudo">Adresse : </label>
+                        <input type="text" class="form-control" name="restaurantAddress" id="modal_AddMarker_RestaurantAddress" placeholder="Adresse" size="74" row="9" maxlength="2000" />
+                        </p>
+                    </form>
+                    <form class="modal-description">
+                        <p>
+                        <label for="pseudo">Description : </label>
+                        <input type="text" class="form-control" name="restaurantDescription" id="modal_AddMarker_RestaurantDescription" placeholder="Description" size="50" row="9" maxlength="2000" />
+                        </p>
+                    </form>
+                    <button type="button" id="modal_AddMarker_ButtonAddRestaurant" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
+                    <button type="button" id="modal_AddMarker_ButtonReturn" class="btn btn-primary" data-dismiss="modal" >Retour</button>
                 </div>
             </div>
         </div>
@@ -97,7 +131,8 @@
 	<script src="js/app.js"></script>
 
     <script>
-        var app = new App();
+        var app_1 = new App();
+        app_1.launchApp();
     </script>
 
 	<script async defer

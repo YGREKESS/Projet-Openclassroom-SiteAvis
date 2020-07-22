@@ -26,7 +26,7 @@ body {
 
 #searchlocalisation{
   height: 35px;
-  width: 600px; 
+  width: 350px; 
   background-color: white;
   color: black;
 }
@@ -66,40 +66,63 @@ body {
   width: 20%;
 }
 
+.restaurantItem{
+  height: auto;
+  width: 100%;
+  background-color: white;
+  border: 1px solid;
+  box-sizing: border-box;
+  text-align: center;    
+}
+
+.restaurantPhoto{
+  background-color: grey;
+  height: 200px;
+  width: 100%;
+}
+
 #map{
   background-color: skyblue;
   height: 90vh;
   width: 100%;	
 }
-/* MODAL */
-.modal_address{
+/* modal_RestaurantDescription */
+#modal_RestaurantDescription{
+  text-align: center;
+}
+.modal_RestaurantDescription_photo{
+  height: 200px;
+  width: 250px;
+  margin: auto; 
+}
+.modal_RestaurantDescription_address{
   margin: 20px 0px 20px 0px;
 }
 
-.modal_CommentTitle{
+.modal_RestaurantDescription_CommentTitle{
   background-color: skyblue;
 }
 
-.modal_CommentContentClass{
+.modal_RestaurantDescription_CommentContentClass{
   margin: 20px 0px 20px 0px;
-
   -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
   box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75); 
 }
 
-#modal_WriteReview{
+#modal_RestaurantDescription_WriteReview{
   margin: 20px 0px 20px 0px;
 }
-.modal_ReviewsContent{
+.modal_RestaurantDescription_ReviewsContent{
   height: 300px;
   overflow: auto;
 }
 
-#addModal {
+/* modal_AddComment */
+#modal_AddComment {
   text-align: center;
 }
 
-#modal_ButtonAddReview{
+#modal_AddComment_ButtonAddReview{
   margin: auto;
 }
