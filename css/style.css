@@ -41,6 +41,12 @@ body {
   margin-right: 40px; 
 }
 
+#actualisation{
+  height: 35px;
+  width: 200px;
+  margin-right: 40px;  
+}
+
 #createMarker{
   height: 35px;
   width: 200px;
@@ -63,7 +69,7 @@ body {
   background-color: white;
   overflow: auto;
   height: 90vh;
-  width: 20%;
+  width: 17%;
 }
 
 .restaurantItem{
@@ -82,9 +88,19 @@ body {
 }
 
 #map{
+  z-index: 2;
   background-color: skyblue;
   height: 90vh;
   width: 100%;	
+}
+
+#explication{
+  text-align: center;
+  position : absolute;
+  right : 150px;
+  width : 300px;
+  height: auto;
+  background-color: white;
 }
 /* modal_RestaurantDescription */
 #modal_RestaurantDescription{
@@ -92,7 +108,7 @@ body {
 }
 .modal_RestaurantDescription_photo{
   height: 200px;
-  width: 250px;
+  width: 200px;
   margin: auto; 
 }
 .modal_RestaurantDescription_address{
@@ -110,10 +126,10 @@ body {
   box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75); 
 }
 
-#modal_RestaurantDescription_WriteReview{
+#modal_RestaurantDescription_WriteComment{
   margin: 20px 0px 20px 0px;
 }
-.modal_RestaurantDescription_ReviewsContent{
+.modal_RestaurantDescription_CommentsContent{
   height: 300px;
   overflow: auto;
 }
@@ -123,6 +139,6 @@ body {
   text-align: center;
 }
 
-#modal_AddComment_ButtonAddReview{
+#modal_AddComment_ButtonAddComment{
   margin: auto;
 }

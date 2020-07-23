@@ -1,7 +1,42 @@
 class App {
 
 	launchApp(){
-	    this.filterListener();
+	    let infoBulle_actualisation = "Ce bouton vous permet d'actualiser les restaurants lorsque vous vous déplacez manuelle sur la map.";
+	    let infoBulle_createMarkerButton = "Ce bouton vous permet d'ajouter un nouveau restaurant. Une fois activé, double-cliquez sur la map à l'emplacement souhaité.";
+	    let infoBulle_geolocationButton = "Ce bouton permet d'activer la géolocalisation.";
+
+	    let actualisation = $("#actualisation")[0];
+	        actualisation.addEventListener("mouseover", mouseOverButton);
+	        actualisation.addEventListener("mouseout", mouseOutButton);
+	    let createMarkerButton = $("#createMarker")[0];
+	        createMarkerButton.addEventListener("mouseover", mouseOverButton);
+	        createMarkerButton.addEventListener("mouseout", mouseOutButton);
+	    let geolocationButton = $("#geolocation")[0];
+	        geolocationButton.addEventListener("mouseover", mouseOverButton);
+	        geolocationButton.addEventListener("mouseout", mouseOutButton);
+
+	    function mouseOverButton(e){   
+	      let div = $("#explication")[0];
+	          div.style.display = "block";
+	          div.style.zIndex = "10";
+	        if ((e.target == actualisation) || (e.target == actualisation.childNodes[0])) {
+	          div.innerHTML = infoBulle_actualisation;
+	        } 
+	        else if ((e.target == createMarkerButton) || (e.target == createMarkerButton.childNodes[0])){
+	          div.innerHTML = infoBulle_createMarkerButton;
+	        }
+	        else {
+	          div.innerHTML = infoBulle_geolocationButton;
+	        }
+	    }
+
+	    function mouseOutButton(text){
+	      let div = $("#explication")[0];
+	          div.style.display = "none";
+	          div.innerHTML = "";
+	    }
+
+		this.filterListener();
 	}
 
 	filterListener() {
@@ -37,7 +72,6 @@ class App {
 			createMarkerButton.addEventListener("click", activeMarker);
 
 		function activeMarker() {
-			alert("Double-cliquez à l'endroit où vous souhaitez ajouter votre restaurant.")
 			createMarkerButtonActive = true;
 			createMarkerButton.style.backgroundColor = "black";
 			dblClick(createMarkerButtonActive);
@@ -45,20 +79,30 @@ class App {
 
 		function dblClick(createMarkerButtonActive){
 			if (createMarkerButtonActive == true) {
-				
 				map.addListener('dblclick', function(e) {
-					$('#modal_AddMarker').modal('toggle');		
+					$('#modal_AddMarker').modal('toggle');
 
-				let modal_AddMarker_ButtonAddRestaurant = $("#modal_AddMarker_ButtonAddRestaurant")[0];
-					modal_AddMarker_ButtonAddRestaurant.addEventListener("click", function(){
+					function click_ButtonAddRestaurant(){
 						let modal_AddMarker_RestaurantName = $("#modal_AddMarker_RestaurantName")[0];
 						let modal_AddMarker_RestaurantAddress = $("#modal_AddMarker_RestaurantAddress")[0];
-						let modal_AddMarker_RestaurantDescription = $("#modal_AddMarker_RestaurantDescription")[0];
+						let modal_AddMarker_RestaurantRating = $("#modal_AddMarker_RestaurantRating")[0];
 						let description = {
 								name : modal_AddMarker_RestaurantName.value,
 								address : modal_AddMarker_RestaurantAddress.value,
-								description : modal_AddMarker_RestaurantDescription.value
+								rate : modal_AddMarker_RestaurantRating.value
 							};
+
+						description = new RestaurantItem(		
+								description.name,
+								null,
+								description.address,
+								description.rate,
+								//'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+							)
+						let restaurantItemsContent = $("#restaurantItemsContent")[0];
+							restaurantItemsContent.style.display = "block";
+						
+						description.createItem();
 
 						placeMarkerAndPanTo(
 							createMarkerButtonActive, 
@@ -66,6 +110,19 @@ class App {
 							map, 
 							description
 						);
+					};
+
+					let modal_AddMarker_ButtonAddRestaurant = $("#modal_AddMarker_ButtonAddRestaurant")[0];
+						modal_AddMarker_ButtonAddRestaurant.addEventListener("click", click_ButtonAddRestaurant);
+
+					$("#modal_AddMarker").on('hide.bs.modal', function () {
+						modal_AddMarker_ButtonAddRestaurant.removeEventListener("click", click_ButtonAddRestaurant);
+						createMarkerButtonActive = false;
+						createMarkerButton.style.backgroundColor = "";
+						dblClick(createMarkerButtonActive);
+						$("#modal_AddMarker_RestaurantName").val("");
+						$("#modal_AddMarker_RestaurantAddress").val("");
+						$("#modal_AddMarker_RestaurantRating").val("");
 					});
 				});
 			} else {	

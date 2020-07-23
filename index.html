@@ -22,6 +22,7 @@
             <option value="4"> 4 étoiles </option>
             <option value="5"> 5 étoiles </option>
         </select>
+        <button id="actualisation" class="btn btn-primary btn-lg" type="submit"><h6>Actualisation</h6></button>
         <button id="createMarker" class="btn btn-primary btn-lg" type="submit"><h6>Ajouter une adresse</h6></button>
         <button id="geolocation" class="btn btn-primary btn-lg" type="submit"><h6>Me géolocaliser</h6></button>
 	</div>
@@ -29,6 +30,7 @@
 	<div id="content">
 		<div id="restaurantItemsContent"></div>
 		<div id="map"></div>
+        <div id="explication"></div>
 	</div>
 
 	<!-- Modal restaurant description-->
@@ -43,9 +45,9 @@
 	      <div class="modal_Body">
 	      		<div class="modal_RestaurantDescription_address"></div>
 	      		<h5 class="modal_RestaurantDescription_CommentTitle" >Les avis</h5>
-		      	<div class="modal_RestaurantDescription_ReviewsContent"></div>
+		      	<div class="modal_RestaurantDescription_CommentsContent"></div>
 	      	<div class="modal_ButtonAddReview">
-	        	<button type="button" id="modal_RestaurantDescription_WriteReview" data-toggle= "modal" data-target= "#modal_AddComment" class="btn btn-primary">Ecrire un avis</button>
+	        	<button type="button" id="modal_RestaurantDescription_WriteComment" data-toggle= "modal" data-target= "#modal_AddComment" class="btn btn-primary">Ecrire un avis</button>
 	      	</div>
 	      </div>
 	    </div>
@@ -53,7 +55,7 @@
 	</div>
 
     <!-- Modal add comment-->
-    <div class="modal fade" id="modal_AddComment" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="modal_AddComment" tabindex="-1" data-width="760" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,7 +81,7 @@
                         <input type="number" class="form-control" name="note" id="ratingId" min="0" max="5" size="50" maxlength="1" />
                         </p>
                     </form>
-                    <button type="button" id="modal_AddComment_ButtonAddReview" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
+                    <button type="button" id="modal_AddComment_ButtonAddComment" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
                 </div>
             </div>
         </div>
@@ -106,14 +108,13 @@
                         <input type="text" class="form-control" name="restaurantAddress" id="modal_AddMarker_RestaurantAddress" placeholder="Adresse" size="74" row="9" maxlength="2000" />
                         </p>
                     </form>
-                    <form class="modal-description">
+                    <form class="modal-rating">
                         <p>
-                        <label for="pseudo">Description : </label>
-                        <input type="text" class="form-control" name="restaurantDescription" id="modal_AddMarker_RestaurantDescription" placeholder="Description" size="50" row="9" maxlength="2000" />
+                        <label for="pseudo">Votre note : </label>
+                        <input type="number" class="form-control" name="note" id="modal_AddMarker_RestaurantRating" min="0" max="5" size="50" maxlength="1" />
                         </p>
                     </form>
                     <button type="button" id="modal_AddMarker_ButtonAddRestaurant" class="btn btn-primary" data-dismiss="modal" >Ajouter</button>
-                    <button type="button" id="modal_AddMarker_ButtonReturn" class="btn btn-primary" data-dismiss="modal" >Retour</button>
                 </div>
             </div>
         </div>
