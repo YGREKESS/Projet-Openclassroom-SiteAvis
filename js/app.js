@@ -35,7 +35,6 @@ class App {
 	          div.style.display = "none";
 	          div.innerHTML = "";
 	    }
-
 		this.filterListener();
 	}
 
@@ -97,19 +96,13 @@ class App {
 								null,
 								description.address,
 								description.rate,
-								//'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+								undefined,
+								'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+								placeMarkerAndPanTo(createMarkerButtonActive,e.latLng,map)
 							)
 						let restaurantItemsContent = $("#restaurantItemsContent")[0];
 							restaurantItemsContent.style.display = "block";
-						
 						description.createItem();
-
-						placeMarkerAndPanTo(
-							createMarkerButtonActive, 
-							e.latLng, 
-							map, 
-							description
-						);
 					};
 
 					let modal_AddMarker_ButtonAddRestaurant = $("#modal_AddMarker_ButtonAddRestaurant")[0];
@@ -130,22 +123,18 @@ class App {
 			}
 		}
 
-		function placeMarkerAndPanTo(createMarkerButtonActive, latLng, map, description) {
+		function placeMarkerAndPanTo(createMarkerButtonActive, latLng, map) {
 			var marker = new google.maps.Marker({
 				position: latLng,
 				map: map
 			});
 			map.panTo(latLng);
 
-			var infoWindow = new google.maps.InfoWindow({
-				content: description.name + " " + description.address + " " + description.description
-			});
-			marker.addListener('click', function() {
-				infoWindow.open(map, marker);
-			});
 			createMarkerButtonActive = false;
 			createMarkerButton.style.backgroundColor = "";
 			dblClick(createMarkerButtonActive);
+
+			return marker;
 		}	
 	}
 }

@@ -17,6 +17,8 @@ class RestaurantItem {
     	this.commentArray = [];
     	if (this.place_Id != null) {
 			this.recupComments();
+		} else {
+			this.recupMyComment();
 		};
 	}
 
@@ -144,7 +146,23 @@ class RestaurantItem {
 		myComment.displayComment();
 	}
 
+	recupMyComment(){
+		//Requete HTML pour récupérer les avis GOOGLE PLACES
+		let reviewsUrl = "https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.text";
+		let request = new XMLHttpRequest();
+			request.open('GET', reviewsUrl);
+			request.responseType = 'json';
+			request.send();
+		request.onload = function () {
+		  let data = request.response;
+		  this.recupMyComment_1(data);
+		}.bind(this)
+	}
 
+
+	recupMyComment_1(data) {
+		console.log(data);
+	}
 
 	recupComments(){
 		//Requete HTML pour récupérer les avis GOOGLE PLACES

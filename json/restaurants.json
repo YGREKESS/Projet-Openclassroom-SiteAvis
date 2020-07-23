@@ -4,6 +4,7 @@
       "address":"39 Rue des Petites Écuries, 75010 Paris",
       "lat":48.8737815,
       "long":2.3501649,
+      "author_name":"Christine LACHARME",
       "ratings":[
          {
             "stars":4,
@@ -36,6 +37,7 @@
       "address":"8 Rue du Fouarre, Paris",
       "lat":48.8516639,
       "long":2.3474032000000307,
+      "author_name":"Touhami SEGHROUCHNI",
       "ratings":[
          {
             "stars":5,
@@ -52,6 +54,7 @@
       "address":"69 Quai de la Tournelle, Paris",
       "lat":48.851206,
       "long":2.3474032000000307,
+      "author_name":"Moumen SEGHROUCHNI",
       "ratings":[
          {
             "stars":4,
@@ -68,6 +71,7 @@
       "address":"12 Rue de l'Hôtel Colbert, Paris",
       "lat":48.8515846,
       "long":2.348303499999929,
+      "author_name":"Sofia SEGHROUCHNI",
       "ratings":[
          {
             "stars":4,
@@ -78,5 +82,10 @@
             "comment":"Après une soirée inoubliable, j'y suis retourné une seconde fois. Cela m'a plu tout autant. Les mets franco-japonais sont excellents et très surprenants. Le service impeccable et attentionné."
          }
       ]
-   }   
+   } 
 ]
+
+
+
+
+            
