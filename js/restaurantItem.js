@@ -16,9 +16,9 @@ class RestaurantItem {
 	    this.marker = marker;
     	this.commentArray = [];
     	if (this.place_Id != null) {
-			this.recupComments();
+			this.recupComments("https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU");
 		} else {
-			this.recupMyComment();
+			this.recupComments("https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.json");
 		};
 	}
 
@@ -74,16 +74,17 @@ class RestaurantItem {
 			modal_Photo.style.backgroundImage = this.location;
 		let modal_Address = $(".modal_RestaurantDescription_address")[0];
 			modal_Address.innerHTML = this.address;
-
-		for (let i = 0; i < this.commentArray.length; i++){	
-			let comment = new Comment (
-				this.commentArray[i].author_name,
-				this.commentArray[i].rating,
-				this.commentArray[i].text,
-				$(".modal_RestaurantDescription_CommentsContent")[0]
-				)
-			comment.displayComment();
-		}
+	
+			for (let i = 0; i < this.commentArray.length; i++){	
+				
+					let comment = new Comment (
+						this.commentArray[i].author_name,
+						this.commentArray[i].rating,
+						this.commentArray[i].text,
+						$(".modal_RestaurantDescription_CommentsContent")[0]
+					)
+					comment.displayComment();
+				} 
 
 		// Bouton "Ecrire un avis" //
 		this.display_modal_AddComment = this.display_modal_AddComment.bind(this);
@@ -123,7 +124,6 @@ class RestaurantItem {
 		});
 	}
 
-
 	click_ButtonAddComment(){
 		let modal_RestaurantDescription = $("#modal_RestaurantDescription")[0];
 		let author_name = $("#pseudoId")[0].value;
@@ -148,7 +148,7 @@ class RestaurantItem {
 
 	recupMyComment(){
 		//Requete HTML pour récupérer les avis GOOGLE PLACES
-		let reviewsUrl = "https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.text";
+		let reviewsUrl = "https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.json";
 		let request = new XMLHttpRequest();
 			request.open('GET', reviewsUrl);
 			request.responseType = 'json';
@@ -159,25 +159,33 @@ class RestaurantItem {
 		}.bind(this)
 	}
 
-
+/*
 	recupMyComment_1(data) {
-		console.log(data);
+		//"https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.json"
+		"https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU"
 	}
+*/
 
-	recupComments(){
+	recupComments(reviewsUrl){
 		//Requete HTML pour récupérer les avis GOOGLE PLACES
-		let reviewsUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU";
+		//let reviewsUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU";
 		let request = new XMLHttpRequest();
 			request.open('GET', reviewsUrl);
 			request.responseType = 'json';
 			request.send();
 		request.onload = function () {
 		  let data = request.response;
-		  this.recupComments1(data);
+		  this.recupComments_1(data);
 		}.bind(this)
 	}
 
-	recupComments1(data) {
-		this.commentArray = data.result.reviews;
+	recupComments_1(data) {
+		if (this.place_Id != null) {
+			this.commentArray = data.result.reviews;
+		}
+		else {
+			console.log(data);
+			this.commentArray = data;
+		}
 	}
 }
