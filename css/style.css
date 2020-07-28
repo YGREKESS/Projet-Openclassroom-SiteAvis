@@ -87,6 +87,14 @@ body {
   width: 100%;
 }
 
+.restaurantRate{
+  margin: 10px 0px 0px 0px;
+}
+.restaurantStars{
+  height: 25px;
+  width: 100%;
+}
+
 #map{
   z-index: 2;
   background-color: skyblue;
@@ -112,22 +120,47 @@ body {
   margin: auto; 
 }
 .modal_RestaurantDescription_address{
-  margin: 20px 0px 20px 0px;
+  margin: 10px 175px 10px 175px;
 }
 
 .modal_RestaurantDescription_CommentTitle{
-  background-color: skyblue;
+  background-color: black;
+  text-transform: uppercase;
+  color: white;
+  margin: 0px 200px 10px 200px;
+}
+
+.modal_RestaurantDescription_CommentsContent{
+  box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.75); 
 }
 
 .modal_RestaurantDescription_CommentContentClass{
-  margin: 20px 0px 20px 0px;
-  -webkit-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75);
-  box-shadow: 5px 5px 20px 0px rgba(0,0,0,0.75); 
+  text-align: justify;
+  border-radius: 10px;
+  padding: 10px 0px 10px 0px;
+  box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.75); 
+}
+
+.modal_commentNameClass{
+  margin: 0px 10px 0px 10px;
+}
+
+.modal_commentRatingClass{
+  margin: 10px 10px 0px 10px;
+}
+
+.modal_commentStarsClass{
+  margin: 0px 10px 0px 10px;
+  height: 25px;
+  width: 100%;
+}
+
+.modal_commentCommentClass{
+  margin: 0px 10px 0px 10px;
 }
 
 #modal_RestaurantDescription_WriteComment{
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px 10px 0px;
 }
 .modal_RestaurantDescription_CommentsContent{
   height: 300px;

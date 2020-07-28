@@ -4,9 +4,9 @@ class myMap {
     this.map = "";
     this.markers = [];
   }
-  ///////////////////////////////
-  // INITIALISATION DE LA MAP
-  ///////////////////////////////
+  //////////////////////////////
+  // INITIALISATION DE LA MAP //
+  //////////////////////////////
   initMap_1() {
 
     let searchlocalisation = $("#searchlocalisation")[0];
@@ -30,10 +30,13 @@ class myMap {
     
     let autocomplete = new google.maps.places.SearchBox(searchlocalisation, options);
     this.geolocalisation();
-    app_1.addMyRestaurant(this.map);
+    this.addMyRestaurant(this.map);
     this.actualisation();
   }
 
+  ////////////////////////////////////////////
+  // MISE A JOUR DES RESTAURANTS DE LA ZONE //
+  ////////////////////////////////////////////
   actualisation(){
     let actualisation = $("#actualisation")[0];
         actualisation.addEventListener("click", actualisation_1.bind(this));
@@ -47,22 +50,102 @@ class myMap {
     }
   }
 
-  ///////////////////////////////
-  // GEOLOCALISATION
-  ///////////////////////////////
+  ///////////////////////////
+  // AJOUT D'UN RESTAURANT //
+  ///////////////////////////
+  addMyRestaurant(map){
+    let createMarkerButtonActive = false;
+    let createMarkerButton = $("#createMarker")[0];
+      createMarkerButton.addEventListener("click", activeMarker);
+
+    function activeMarker() {
+      createMarkerButtonActive = true;
+      createMarkerButton.style.backgroundColor = "black";
+      dblClick(createMarkerButtonActive);
+    }
+
+    function dblClick(createMarkerButtonActive){
+      if (createMarkerButtonActive == true) {
+        map.addListener('dblclick', function(e) {
+          $('#modal_AddMarker').modal('toggle');
+
+          function click_ButtonAddRestaurant(){
+            let modal_AddMarker_RestaurantName = $("#modal_AddMarker_RestaurantName")[0].value;
+            let modal_AddMarker_RestaurantAddress = $("#modal_AddMarker_RestaurantAddress")[0].value;
+            let modal_AddMarker_RestaurantRating = $("#modal_AddMarker_RestaurantRating")[0].value;
+            let description = {
+                name : modal_AddMarker_RestaurantName,
+                address : modal_AddMarker_RestaurantAddress,
+                rate : modal_AddMarker_RestaurantRating
+              };
+
+            if((description.name != "") & (description.address != "") & (description.rate != "")) {
+              description = new RestaurantItem(   
+                  description.name,
+                  null,
+                  description.address,
+                  description.rate,
+                  undefined,
+                  'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+                  placeMarkerAndPanTo(createMarkerButtonActive,e.latLng,map)
+                )
+              description.createItem();
+              let restaurantItemsContent = $("#restaurantItemsContent")[0];
+                  restaurantItemsContent.style.display = "block";           
+            }  else {
+              alert("Merci de compléter l'ensemble des champs pour ajouter un nouveau restaurant.")
+            }
+          };
+
+          let modal_AddMarker_ButtonAddRestaurant = $("#modal_AddMarker_ButtonAddRestaurant")[0];
+            modal_AddMarker_ButtonAddRestaurant.addEventListener("click", click_ButtonAddRestaurant);
+
+          $("#modal_AddMarker").on('hide.bs.modal', function () {
+            modal_AddMarker_ButtonAddRestaurant.removeEventListener("click", click_ButtonAddRestaurant);
+            createMarkerButtonActive = false;
+            createMarkerButton.style.backgroundColor = "";
+            dblClick(createMarkerButtonActive);
+            $("#modal_AddMarker_RestaurantName").val("");
+            $("#modal_AddMarker_RestaurantAddress").val("");
+            $("#modal_AddMarker_RestaurantRating").val("");
+          });
+        });
+      } else {  
+        google.maps.event.clearListeners(map, 'dblclick');
+      }
+    }
+
+    function placeMarkerAndPanTo(createMarkerButtonActive, latLng, map) {
+      let marker = new google.maps.Marker({
+        position: latLng,
+        map: map
+      });
+      map.panTo(latLng);
+
+      createMarkerButtonActive = false;
+      createMarkerButton.style.backgroundColor = "";
+      dblClick(createMarkerButtonActive);
+
+      return marker;
+    } 
+  }
+
+  /////////////////////
+  // GEOLOCALISATION //
+  /////////////////////
   geolocalisation(){
     let geolocationButton = $("#geolocation")[0];
         geolocationButton.addEventListener("click", geolocalisation_1.bind(this));
 
     function geolocalisation_1(){
       navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
+        let pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
               }
-        var latlng = new google.maps.LatLng(pos);
+        let latlng = new google.maps.LatLng(pos);
 
-        this.map.zoom = 14;
+        this.map.zoom = 15;
         this.map.setCenter(pos);
         this.clearMarkers();
         this.places(pos, this.map);
@@ -70,9 +153,9 @@ class myMap {
     }
   }
 
-  ///////////////////////////////////////////////////////
-  // AFFICHAGE DU LIEU SAISI DANS LA BARRE DE RECHERCHE
-  ///////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
+  // AFFICHAGE DU LIEU SAISI DANS LA BARRE DE RECHERCHE //
+  ////////////////////////////////////////////////////////
   geocode(e){
     e.preventDefault();
     let location = searchlocalisation.value; // Valeur de l'input
@@ -92,15 +175,15 @@ class myMap {
 
   searchLocalisation(response) {
     let search = new google.maps.LatLng(response.data.results[0].geometry.location.lat,response.data.results[0].geometry.location.lng);
-    this.map.zoom = 14;
+    this.map.zoom = 15;
     this.map.setCenter(search);
     this.clearMarkers();
     this.places(search, this.map);
   }
 
-  //////////////////////////////////////////
-  // AFFICHAGE DES RESTAURANTS A PROXIMITE
-  //////////////////////////////////////////
+  ///////////////////////////////////////////
+  // AFFICHAGE DES RESTAURANTS A PROXIMITE //
+  ///////////////////////////////////////////
   places(search, map){
     let request = {
       location: search,
@@ -138,31 +221,30 @@ class myMap {
     }
   }
 
-    setMapOnAll(map) {
-      for (let i = 0; i < this.markers.length; i++) {
-        this.markers[i].setMap(map);
-      }
+  ///////////////////////////
+  // GESTION DES MARQUEURS //
+  ///////////////////////////
+  setMapOnAll(map) {
+    for (let i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(map);
     }
-
-    clearMarkers() {
-      this.setMapOnAll(null);
-      this.markers = [];
-    }
-
-    createMarkerInfos(result, map) {
-      let lat1 = result.geometry.location.lat();
-      let lng1 = result.geometry.location.lng();
-        
-      let marker = new google.maps.Marker({
-          position: {lat: lat1, lng: lng1},
-          map: map
-      });
-
-      this.markers.push(marker);
-      this.setMapOnAll(map);
-
-      return marker;
-    }
+  }
+  clearMarkers() {
+    this.setMapOnAll(null);
+    this.markers = [];
+  }
+  createMarkerInfos(result, map) {
+    let lat1 = result.geometry.location.lat();
+    let lng1 = result.geometry.location.lng();
+      
+    let marker = new google.maps.Marker({
+        position: {lat: lat1, lng: lng1},
+        map: map
+    });
+    this.markers.push(marker);
+    this.setMapOnAll(map);
+    return marker;
+  }
 }
 
 let map_1 = new myMap();
