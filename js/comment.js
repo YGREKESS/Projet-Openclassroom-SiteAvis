@@ -17,8 +17,6 @@ class Comment {
         	modal_commentRatingClass.className = "modal_commentRatingClass";
         let modal_commentStarsClass = document.createElement("div");
             modal_commentStarsClass.className = "modal_commentStarsClass";
-        let modal_commentCommentImg = document.createElement("div");
-        	modal_commentCommentImg.className = "modal_commentCommentImg";
         let modal_commentCommentClass = document.createElement("div");
         	modal_commentCommentClass.className = "modal_commentCommentClass";
         let modal_RestaurantDescription_CommentContentClass = document.createElement("div");
@@ -26,7 +24,6 @@ class Comment {
 	        modal_RestaurantDescription_CommentContentClass.appendChild(modal_commentNameClass);
 	        modal_RestaurantDescription_CommentContentClass.appendChild(modal_commentRatingClass); 
             modal_RestaurantDescription_CommentContentClass.appendChild(modal_commentStarsClass); 
-	        modal_RestaurantDescription_CommentContentClass.appendChild(modal_commentCommentImg); 
 	        modal_RestaurantDescription_CommentContentClass.appendChild(modal_commentCommentClass);
             
         modal_commentNameClass.textContent = "Pseudo : " + this.name;

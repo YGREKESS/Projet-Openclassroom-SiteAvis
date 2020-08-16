@@ -38,33 +38,17 @@ class App {
 	          div.style.display = "none";
 	          div.innerHTML = "";
 	    }
-		this.filterListener();
 	}
 
-    ////////////////////////////////////
-    // GESTION DU FILTRE DE RECHERCHE //
-    ////////////////////////////////////
-	filterListener() {
-		let filterButton = $("#filterId")[0];
-		    filterButton.addEventListener('change', function () {
-		    let selectedStars = filterButton.value;
-		    this.filter(selectedStars);
-		    }.bind(this));
-	}
-	filter(maxStars){
-		let restaurantItem = $(".restaurantItem");
-
-		for (let i = 0; i < restaurantItem.length; i++) {
-			let restaurantRate = $(".restaurantRate")[i];
-			let itemStars = restaurantRate.innerHTML;
-			let x = Math.round(itemStars);
-			let parentElm = restaurantRate.parentNode;
-
-	        if (itemStars >= maxStars || maxStars === 'noFilter' || maxStars === 'Nombre d\'étoile :') {
-	            parentElm.style.display = 'block';
-	        } else {
-	            parentElm.style.display = 'none';
-	        }
+	recupData(url, callback){
+		console.log(url);
+		let request = new XMLHttpRequest();
+			request.open('GET', url);
+			request.responseType = 'json';
+			request.send();
+		request.onload = function () {
+		  let data = request.response;
+		  callback(data); 
 		}
 	}
 }

@@ -9,10 +9,6 @@ class myMap {
   //////////////////////////////
   initMap_1() {
 
-    let searchlocalisation = $("#searchlocalisation")[0];
-    let searchbar = $("#searchbar")[0];
-        searchbar.addEventListener("submit", this.geocode.bind(this));
-
     let france = {
       lat : 46.485873,
         lng : 2.640097
@@ -23,12 +19,17 @@ class myMap {
     zoom: 7
     });
 
+    let searchlocalisation = $("#searchlocalisation")[0];
+    let searchbar = $("#searchbar")[0];
+        searchbar.addEventListener("submit", this.geocode.bind(this));
+
     let options = {
       types: ['(country)'],
       componentRestrictions: {country: 'fr'}
     };
     
     let autocomplete = new google.maps.places.SearchBox(searchlocalisation, options);
+
     this.geolocalisation();
     this.addMyRestaurant(this.map);
     this.actualisation();
@@ -66,6 +67,7 @@ class myMap {
 
     function dblClick(createMarkerButtonActive){
       if (createMarkerButtonActive == true) {
+
         map.addListener('dblclick', function(e) {
           $('#modal_AddMarker').modal('toggle');
 
@@ -89,9 +91,9 @@ class myMap {
                   'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
                   placeMarkerAndPanTo(createMarkerButtonActive,e.latLng,map)
                 )
-              description.createItem();
               let restaurantItemsContent = $("#restaurantItemsContent")[0];
-                  restaurantItemsContent.style.display = "block";           
+                  restaurantItemsContent.style.display = "block";      
+              description.createItem();
             }  else {
               alert("Merci de compléter l'ensemble des champs pour ajouter un nouveau restaurant.")
             }
@@ -156,25 +158,19 @@ class myMap {
   ////////////////////////////////////////////////////////
   // AFFICHAGE DU LIEU SAISI DANS LA BARRE DE RECHERCHE //
   ////////////////////////////////////////////////////////
+
   geocode(e){
     e.preventDefault();
+
     let location = searchlocalisation.value; // Valeur de l'input
-    axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
-      params:{
-        address: location,
-        key: "AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU"
-      }
-    })
-    .then(function(response){ // SI OK
-      this.searchLocalisation(response);
-    }.bind(this))
-    .catch(function(error){ // SI KO
-      console.log(error);
-    });
+    let url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU";
+  
+    app_1.recupData(url, this.searchLocalisation.bind(this));
   }
 
   searchLocalisation(response) {
-    let search = new google.maps.LatLng(response.data.results[0].geometry.location.lat,response.data.results[0].geometry.location.lng);
+    console.log(response);
+    let search = new google.maps.LatLng(response.results[0].geometry.location.lat,response.results[0].geometry.location.lng);
     this.map.zoom = 15;
     this.map.setCenter(search);
     this.clearMarkers();
@@ -185,14 +181,16 @@ class myMap {
   // AFFICHAGE DES RESTAURANTS A PROXIMITE //
   ///////////////////////////////////////////
   places(search, map){
+
+    let service = new google.maps.places.PlacesService(map);
+
     let request = {
       location: search,
         radius: '150',
         query: "restaurant"
       };
 
-      let service = new google.maps.places.PlacesService(map);
-      service.textSearch(request, callback.bind(this));
+        service.textSearch(request, callback.bind(this));
 
     function callback(results, status) {
       let restaurantItemsContent = $("#restaurantItemsContent")[0];

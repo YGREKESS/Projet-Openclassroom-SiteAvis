@@ -16,10 +16,11 @@ class RestaurantItem {
 	    this.marker = marker;
     	this.commentArray = [];
     	if (this.place_Id != null) {
-			this.recupComments("https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU");
+			app_1.recupData("https://maps.googleapis.com/maps/api/place/details/json?place_id=" + this.place_Id + "&fields=review&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU", this.recupComments.bind(this));
 		} else {
-			this.recupComments("https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.json");
+			app_1.recupData("https://raw.githubusercontent.com/Ygrekess/P7-Site_d_avis/master/json/restaurants.json", this.recupComments.bind(this));
 		};
+		this.filterListener();
 	}
 
     /////////////////////////////////////////////
@@ -49,6 +50,7 @@ class RestaurantItem {
 			restaurantRate.className = "restaurantRate";
 			restaurantRate.innerHTML = this.rate + " étoile(s)";
 
+		// Affichage des étoiles //
 		let restaurantStars = document.createElement("div");
 			restaurantStars.className = "restaurantStars";
 		let x = Math.round(this.rate);
@@ -60,29 +62,30 @@ class RestaurantItem {
 		    else if (x === 5) {restaurantStars.style.background = "url('img/5_stars.png') no-repeat center";}
 		    else {restaurantStars.style.background = "url('img/0_star.png') no-repeat center";};
 
-			restaurantItemsContent.appendChild(this.item);
-			this.item.appendChild(restaurantPhoto);
-			this.item.appendChild(restaurantName);
-			this.item.appendChild(restaurantAddress);
-			this.item.appendChild(restaurantRate);
-			this.item.appendChild(restaurantStars);		
+		restaurantItemsContent.appendChild(this.item);
+		this.item.appendChild(restaurantPhoto);
+		this.item.appendChild(restaurantName);
+		this.item.appendChild(restaurantAddress);
+		this.item.appendChild(restaurantRate);
+		this.item.appendChild(restaurantStars);		
 
-			// Pour que le restaurant ajouté manuellement s'insère en haut de la liste //
-			let restaurantItemList = $(".restaurantItem");
-			if (restaurantItemList.length != 0) {
-				if(this.place_Id == null){
-				let parentDiv = this.item.parentNode;
-					parentDiv.insertBefore(this.item, restaurantItemList[0]);
-				}
+		// Pour que le restaurant ajouté manuellement s'insère en haut de la liste //
+		let restaurantItemList = $(".restaurantItem");
+		if (restaurantItemList.length != 0) {
+			if(this.place_Id == null){
+			let parentDiv = this.item.parentNode;
+				parentDiv.insertBefore(this.item, restaurantItemList[0]);
 			}
+		}
 
+		// Vérifie si un filtre est indiqué //
 		let filterButton = $("#filterId")[0];
 		let selectedStars = filterButton.value;
-		    app_1.filter(selectedStars);
+	    this.filter(selectedStars);
 
-			this.display_modal_RestaurantDescription = this.display_modal_RestaurantDescription.bind(this);
-			this.item.addEventListener("click", this.display_modal_RestaurantDescription);
-			this.marker.addListener("click", this.display_modal_RestaurantDescription);
+		this.display_modal_RestaurantDescription = this.display_modal_RestaurantDescription.bind(this);
+		this.item.addEventListener("click", this.display_modal_RestaurantDescription);
+		this.marker.addListener("click", this.display_modal_RestaurantDescription);
 	}
 
     ////////////////////////////////////////////
@@ -97,16 +100,15 @@ class RestaurantItem {
 		let modal_Address = $(".modal_RestaurantDescription_address")[0];
 			modal_Address.innerHTML = this.address;
 	
-			for (let i = 0; i < this.commentArray.length; i++){	
-				
-					let comment = new Comment (
-						this.commentArray[i].author_name,
-						this.commentArray[i].rating,
-						this.commentArray[i].text,
-						$(".modal_RestaurantDescription_CommentsContent")[0]
-					)
-					comment.displayComment();
-				} 
+		for (let i = 0; i < this.commentArray.length; i++){	
+			let comment = new Comment (
+				this.commentArray[i].author_name,
+				this.commentArray[i].rating,
+				this.commentArray[i].text,
+				$(".modal_RestaurantDescription_CommentsContent")[0]
+			)
+			comment.displayComment();
+		} 
 
 		// Bouton "Ecrire un avis" //
 		this.display_modal_AddComment = this.display_modal_AddComment.bind(this);
@@ -177,20 +179,30 @@ class RestaurantItem {
 		}
 	}
 
-    /////////////////////////////////////////////////////////////////
-    // RECUPERATION DES COMMENTAIRES (Google places, fichier JSON) //
-    /////////////////////////////////////////////////////////////////
-	recupComments(reviewsUrl){
-		let request = new XMLHttpRequest();
-			request.open('GET', reviewsUrl);
-			request.responseType = 'json';
-			request.send();
-		request.onload = function () {
-		  let data = request.response;
-		  this.recupComments_1(data);
-		}.bind(this)
+    ////////////////////////////////////
+    // GESTION DU FILTRE DE RECHERCHE //
+    ////////////////////////////////////
+	filterListener() {
+		let filterButton = $("#filterId")[0];
+		    filterButton.addEventListener('change', function () {
+		    let selectedStars = filterButton.value;
+		    this.filter(selectedStars);
+		    }.bind(this));
 	}
-	recupComments_1(data) {
+	filter(maxStars){
+		let itemStars = this.rate;
+		let x = Math.round(itemStars);
+
+        if (itemStars >= maxStars || maxStars === 'noFilter' || maxStars === 'Nombre d\'étoile :') {
+            this.item.style.display = 'block';
+            this.marker.setVisible(true);
+        } else {
+            this.item.style.display = 'none';
+            this.marker.setVisible(false);
+        }
+	}
+
+	recupComments(data) {
 		if (this.place_Id != null) {
 			this.commentArray = data.result.reviews;
 		}
@@ -198,4 +210,5 @@ class RestaurantItem {
 			this.commentArray = data;
 		}
 	}
+
 }
