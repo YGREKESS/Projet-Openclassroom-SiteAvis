@@ -23,6 +23,18 @@ class RestaurantItem {
 		this.filterListener();
 	}
 
+    ///////////////////////////
+    // RECUPERATION DES AVIS //
+    ///////////////////////////
+	recupComments(data) {
+		if (this.place_Id != null) {
+			this.commentArray = data.result.reviews;
+		}
+		else {
+			this.commentArray = data;
+		}
+	}
+
     /////////////////////////////////////////////
     // CREATION DES ITEMS DE CHAQUE RESTAURANT //
     /////////////////////////////////////////////
@@ -166,16 +178,20 @@ class RestaurantItem {
 		}		
 
 		if((myComment.author_name != "") & (myComment.rating != "") & (myComment.text != ""))  {
-		let commentArray2 = this.commentArray.push(myComment);
-			myComment = new Comment(
-				myComment.author_name, 
-				myComment.rating, 
-				myComment.text,
-				$(".modal_RestaurantDescription_CommentsContent")[0]
-			);
-			myComment.displayComment();
+			if (myComment.rating <= 5) {
+			let commentArray2 = this.commentArray.push(myComment);
+				myComment = new Comment(
+					myComment.author_name, 
+					myComment.rating, 
+					myComment.text,
+					$(".modal_RestaurantDescription_CommentsContent")[0]
+				);
+				myComment.displayComment();
+			} else {
+				alert("Merci de donner une note entre 1 et 5.");
+			}
 		} else {
-			alert("Merci de compléter l'ensemble des champs pour ajouter un nouveau commentaire.")
+			alert("Merci de compléter l'ensemble des champs pour ajouter un nouveau commentaire.");
 		}
 	}
 
@@ -202,13 +218,6 @@ class RestaurantItem {
         }
 	}
 
-	recupComments(data) {
-		if (this.place_Id != null) {
-			this.commentArray = data.result.reviews;
-		}
-		else {
-			this.commentArray = data;
-		}
-	}
+
 
 }

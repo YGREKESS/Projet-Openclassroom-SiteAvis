@@ -70,7 +70,7 @@ class myMap {
 
         map.addListener('dblclick', function(e) {
           $('#modal_AddMarker').modal('toggle');
-
+          console.log(e);
           function click_ButtonAddRestaurant(){
             let modal_AddMarker_RestaurantName = $("#modal_AddMarker_RestaurantName")[0].value;
             let modal_AddMarker_RestaurantAddress = $("#modal_AddMarker_RestaurantAddress")[0].value;
@@ -82,18 +82,22 @@ class myMap {
               };
 
             if((description.name != "") & (description.address != "") & (description.rate != "")) {
-              description = new RestaurantItem(   
-                  description.name,
-                  null,
-                  description.address,
-                  description.rate,
-                  undefined,
-                  'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
-                  placeMarkerAndPanTo(createMarkerButtonActive,e.latLng,map)
-                )
-              let restaurantItemsContent = $("#restaurantItemsContent")[0];
-                  restaurantItemsContent.style.display = "block";      
-              description.createItem();
+              if (description.rate <= 5) {
+                description = new RestaurantItem(   
+                    description.name,
+                    null,
+                    description.address,
+                    description.rate,
+                    undefined,
+                    'url(https://maps.googleapis.com/maps/api/streetview?size=300x200&location=' + e.latLng.lat() + ',' + e.latLng.lng() + '&heading=151.78&pitch=-0.76&key=AIzaSyC9qQyiKfow1J6Cgnk_02d10II9O2ik3NU)',
+                    placeMarkerAndPanTo(createMarkerButtonActive,e.latLng,map)
+                  )
+                let restaurantItemsContent = $("#restaurantItemsContent")[0];
+                    restaurantItemsContent.style.display = "block";   
+                description.createItem();
+              } else {
+                alert("Merci de donner une note entre 1 et 5.");
+              }
             }  else {
               alert("Merci de compléter l'ensemble des champs pour ajouter un nouveau restaurant.")
             }

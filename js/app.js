@@ -41,7 +41,6 @@ class App {
 	}
 
 	recupData(url, callback){
-		console.log(url);
 		let request = new XMLHttpRequest();
 			request.open('GET', url);
 			request.responseType = 'json';
