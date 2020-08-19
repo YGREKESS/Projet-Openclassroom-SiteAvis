@@ -41,4 +41,4 @@ class Comment {
         modal_commentCommentClass.textContent = "Commentaire : " + this.comment;
         this.htmlNode.appendChild(modal_RestaurantDescription_CommentContentClass);
 	}
-}
+} 
